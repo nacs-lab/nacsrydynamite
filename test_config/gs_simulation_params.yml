@@ -1,0 +1,14 @@
+config:
+  out_file: /n/home09/kwang02/ryd_simulations/out_data.yml
+arr:
+  type: rect
+  size: [3,3]
+  spacing: [1,1]
+params:
+  omega: 0.5
+  delta: 5
+  C6: 30
+scan:
+  C6:
+    dim: 1
+    vals: [0]

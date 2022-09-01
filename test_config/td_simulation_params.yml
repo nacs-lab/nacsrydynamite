@@ -1,0 +1,6 @@
+config:
+  out_file: /n/home09/kwang02/ryd_simulations/td_out_data.yml
+arr:
+  type: rect
+  size: [3,3]
+  spacing: [1.414,1.414]
