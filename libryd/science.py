@@ -82,4 +82,6 @@ def exp_in_exp_out(start, stop1, t1, tau1, stop2, t2, tau2):
             exp2a = math.exp((t1 + t2) / tau2)
             exp2b = math.exp(t1 / tau2)
             return (stop2 - stop1) / exp2m * math.exp((t - t1) / tau2) + (-exp2a * stop1 + exp2b * stop2) / (exp2b-exp2a)
+        else:
+            return stop2
     return fn
