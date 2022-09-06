@@ -66,3 +66,20 @@ def constant(val):
     def fn(t):
         return val
     return fn
+
+def exp_in_exp_out(start, stop1, t1, tau1, stop2, t2, tau2):
+    @vectorize
+    def fn(t):
+        if t < 0:
+            return start
+        elif t < t1:
+            exp1 = math.exp(t1 / tau1)
+            exp1m = exp1 - 1
+            return -exp1 * (stop1 - start) / exp1m * math.exp(-t / tau1) + (exp1 * stop1 - start) / exp1m
+        elif t < t1 + t2:
+            exp2 = math.exp(t2 /tau2)
+            exp2m = exp2 - 1
+            exp2a = math.exp((t1 + t2) / tau2)
+            exp2b = math.exp(t1 / tau2)
+            return (stop2 - stop1) / exp2m * math.exp((t - t1) / tau2) + (-exp2a * stop1 + exp2b * stop2) / (exp2b-exp2a)
+    return fn
