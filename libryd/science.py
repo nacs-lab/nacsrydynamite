@@ -85,3 +85,25 @@ def exp_in_exp_out(start, stop1, t1, tau1, stop2, t2, tau2):
         else:
             return stop2
     return fn
+
+def piecewise_lin(fs, ts):
+    #fs and ts are both lists. first ramp will be from fs[0] to fs[1] in time ts[0] to ts[1], etc.
+    # assume ts are sorted.
+    @vectorize
+    def fn(t):
+        idx = 0
+        while True:
+            if idx == 0:
+                if t < ts[idx]:
+                    return fs[idx]
+                else:
+                    idx = idx + 1
+            elif idx >= len(ts):
+                return fs[-1]
+            else:
+                if t < ts[idx]:
+                    # t is already  greater than ts[idx - 1]
+                    return fs[idx - 1] + (fs[idx] - fs[idx - 1]) / (ts[idx] - ts[idx - 1]) * (t - ts[idx - 1])
+                else:
+                    idx = idx + 1
+    return fn
