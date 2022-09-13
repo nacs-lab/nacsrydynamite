@@ -39,7 +39,7 @@ def measure_n_op(state):
     return res, real_res
 
 def measure_sum_bond(state):
-    op = identity()
+    op = zero()
     for i in range(config.L - 1):
         op = op + (-1)**i * (n_op(i) - n_op(i + 1))
     res = state.dot(op*state)
