@@ -38,6 +38,14 @@ def measure_n_op(state):
         real_res.append(val.real)
     return res, real_res
 
+def measure_sum_bond(state):
+    op = identity()
+    for i in range(config.L - 1):
+        op = op + (-1)**i * (n_op(i) - n_op(i + 1))
+    res = state.dot(op*state)
+    real_res = res.real
+    return res, real_res
+
 def vectorize(func):
     def f(ts):
         if type(ts) == list:
