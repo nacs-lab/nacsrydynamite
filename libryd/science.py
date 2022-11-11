@@ -127,6 +127,8 @@ def lila_in_and_out(Ei, Ec, Ef, delta_i, delta_c, delta_f, t1, t2):
         elif t < t1 + t2:
             fn_hdl = lila_out(Ef, Ec, delta_f, delta_c, t2)
             return fn_hdl(t - t1)
+        else:
+            return delta_f
     return fn
 
 def piecewise_lin(fs, ts):
