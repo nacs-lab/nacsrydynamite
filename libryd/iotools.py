@@ -2,6 +2,7 @@
 
 from libryd import types, utils
 from dynamite.tools import mpi_print
+import numpy as np
 import sys
 import os
 
@@ -33,6 +34,21 @@ def get_arr_params(param_dict):
         for i in range(arr_size[0]):
             for j in range(arr_size[1]):
                 coords.append([arr_spacing[0] * i, arr_spacing[1] * j])
+    elif arr_type == "circ":
+        arr_rad = arr_info["radius"]
+        arr_tot_sites = arr_info["n_sites"]
+        arr_phase = arr_info["phase"]
+        arr_fill_sites = arr_info["filled_sites"]
+        arr_center = arr_info["center"]
+        if len(arr_center) != 2:
+            raise Exception("Please input two values for circle center")
+        coords = []
+        dtheta = 2 * np.pi / (arr_tot_sites - 1)
+        theta = arr_phase
+        for i in range(arr_tot_sites):
+            if i in arr_fill_sites:
+                coords.append([arr_rad * np.cos(theta) + arr_center[0], arr_rad * np.sin(theta) + arr_center[1]])
+            theta = theta + dtheta
     else:
         coords = arr_info["coords"]
     return coords
