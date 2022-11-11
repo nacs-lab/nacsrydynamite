@@ -94,6 +94,41 @@ def exp_in_exp_out(start, stop1, t1, tau1, stop2, t2, tau2):
             return stop2
     return fn
 
+def lila_in(E0, Ec, delta_i, delta_c, tf):
+    @vectorize
+    def fn(t):
+        if t < 0:
+            return delta_i
+        elif t < tf:
+            return (E0 * delta_c * t + Ec * delta_i * (tf - t)) / (E0 * t + Ec * (tf - t))
+        else:
+            return delta_c
+    return fn
+
+def lila_out(Ef, Ec, delta_f, delta_c, tf):
+    @vectorize
+    def fn(t):
+        if t < 0:
+            return delta_c
+        elif t < tf:
+            return (Ef * delta_c * (tf - t) + Ec * delta_f * t) / (Ef * (tf - t) + Ec * t)
+        else:
+            return delta_f
+    return fn
+
+def lila_in_and_out(Ei, Ec, Ef, delta_i, delta_c, delta_f, t1, t2):
+    @vectorize
+    def fn(t):
+        if t < 0:
+            return delta_i
+        elif t < t1:
+            fn_hdl = lila_in(Ei, Ec, delta_i, delta_c, t1)
+            return fn_hdl(t)
+        elif t < t1 + t2:
+            fn_hdl = lila_out(Ef, Ec, delta_f, delta_c, t2)
+            return fn_hdl(t - t1)
+    return fn
+
 def piecewise_lin(fs, ts):
     #fs and ts are both lists. first ramp will be from fs[0] to fs[1] in time ts[0] to ts[1], etc.
     # assume ts are sorted.
