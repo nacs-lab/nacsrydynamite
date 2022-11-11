@@ -72,6 +72,11 @@ def make_scan_dict():
     scan_dict["scan"] = dict()
     return scan_dict
 
+def make_arr_dict():
+    arr_dict = dict()
+    arr_dict["arr"] = dict()
+    return arr_dict
+
 def gen_t_array(start_t, end_t, step_t):
     res = []
     t = start_t
