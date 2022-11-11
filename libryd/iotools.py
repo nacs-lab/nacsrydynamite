@@ -43,7 +43,7 @@ def get_arr_params(param_dict):
         if len(arr_center) != 2:
             raise Exception("Please input two values for circle center")
         coords = []
-        dtheta = 2 * np.pi / (arr_tot_sites - 1)
+        dtheta = 2 * np.pi / arr_tot_sites
         theta = arr_phase
         for i in range(arr_tot_sites):
             if i in arr_fill_sites:
