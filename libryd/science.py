@@ -57,7 +57,7 @@ def measure_sigma_field_corr_open(state):
     for i in range(config.L - 1):
         entry = []
         real_entry = []
-        for j in range(i, config.L):
+        for j in range(i, config.L - 1):
             op = sigma_bond_op(i) * sigma_bond_op(j)
             val = state.dot(op * state)
             entry.append(val)
