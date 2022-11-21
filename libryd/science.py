@@ -5,6 +5,9 @@ import math
 def n_op(i):
     return (identity() + sigmaz(i)) / 2
 
+def sigma_bond_op(i):
+    return (-1)**i * (n_op(i) - n_op(i + 1))
+
 def HRyd(coords, C6, omega, delta):
     # delta, omega and C6 should all be in units of real frequency
     # coords and C6 need to agree on their units
@@ -25,7 +28,7 @@ def measure_sigmaz(state):
     real_res = []
     for i in range(config.L):
         val = state.dot(sigmaz(i) * state)
-        res.append(state.dot(sigmaz(i)*state))
+        res.append(val)
         real_res.append(val.real)
     return res, real_res
 
@@ -34,8 +37,33 @@ def measure_n_op(state):
     real_res = []
     for i in range(config.L):
         val = state.dot(n_op(i) * state)
-        res.append(state.dot(n_op(i)*state))
+        res.append(val)
         real_res.append(val.real)
+    return res, real_res
+
+def measure_sigma_field_open(state):
+    res = []
+    real_res = []
+    for i in range(config.L - 1):
+        op = (-1)**i * (n_op(i) - n_op(i + 1))
+        val = state.dot(op * state)
+        res.append(val)
+        real_res.append(val.real)
+    return res, real_res
+
+def measure_sigma_field_corr_open(state):
+    res = []
+    real_res = []
+    for i in range(config.L - 1):
+        entry = []
+        real_entry = []
+        for j in range(i, config.L):
+            op = sigma_bond_op(i) * sigma_bond_op(j)
+            val = state.dot(op * state)
+            entry.append(val)
+            real_entry.append(val.real)
+        res.append(entry)
+        real_res.append(real_entry)
     return res, real_res
 
 def measure_sum_bond(state):
