@@ -23,6 +23,23 @@ def HRyd(coords, C6, omega, delta):
             res = res + 2 * math.pi * C6 / (math.dist(coords[i], coords[j]))**6 * n_op(i) * n_op(j)
     return res
 
+def HRydWithPhase(coords, C6, omega, phase, delta):
+    # delta, omega and C6 should all be in units of real frequency
+    # coords and C6 need to agree on their units
+    n_atoms = len(coords)
+    if type(omega) != list:
+        omega = [omega for i in range(n_atoms)]
+    if type(delta) != list:
+        delta = [delta for i in range(n_atoms)]
+    if type(phase) != list:
+        phase = [phase for i in range(n_atoms)]
+    res = zero()
+    for i in range(n_atoms):
+        res = res + 2 * math.pi * omega[i] * math.cos(phase[i]) / 2 * sigmax(i) + 2 * math.pi * omega[i] * math.sin(phase[i]) / 2 * sigmay(i) - 2 * math.pi * delta[i] * n_op(i)
+        for j in range(i+1, n_atoms):
+            res = res + 2 * math.pi * C6 / (math.dist(coords[i], coords[j]))**6 * n_op(i) * n_op(j)
+    return res
+
 def measure_sigmaz(state):
     res = []
     real_res = []
