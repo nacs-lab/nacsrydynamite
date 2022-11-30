@@ -197,3 +197,23 @@ def piecewise_lin(fs, ts):
                 else:
                     idx = idx + 1
     return fn
+
+def piecewise_jump(vals, ts):
+    @vectorize
+    def fn(t):
+        idx = 0
+        while True:
+            if idx == 0:
+                if t < ts[idx]:
+                    return vals[idx]
+                else:
+                    idx = idx + 1
+            elif idx >= len(ts):
+                return vals[-1]
+            else:
+                if t < ts[idx]:
+                    # t is already  greater than ts[idx - 1]
+                    return vals[idx]
+                else:
+                    idx = idx + 1
+    return fn
