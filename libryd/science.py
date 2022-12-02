@@ -199,6 +199,7 @@ def piecewise_lin(fs, ts):
     return fn
 
 def piecewise_jump(vals, ts):
+    # should have one more vals element than ts elements
     @vectorize
     def fn(t):
         idx = 0
@@ -217,3 +218,26 @@ def piecewise_jump(vals, ts):
                 else:
                     idx = idx + 1
     return fn
+
+def piecewise_fn(fns, ts):
+    # should have one more fns element than ts elements
+    # fn use the time from the beginning of the particular segment
+    @vectorize
+    def fn(t):
+        idx = 0
+        while True:
+            if idx == 0:
+                if t < ts[idx]:
+                    return fns[0](t)
+                else:
+                    idx = idx + 1
+            elif idx >= len(ts):
+                return fns[-1](t - ts[-1])
+            else:
+                if t < ts[idx]:
+                    # t is already  greater than ts[idx - 1]
+                    return vals[idx]
+                else:
+                    idx = idx + 1
+    return fn
+
