@@ -176,6 +176,12 @@ def lila_in_and_out(Ei, Ec, Ef, delta_i, delta_c, delta_f, t1, t2):
             return delta_f
     return fn
 
+def sine(amp, freq, phase):
+    @vectorize
+    def fn(t):
+        return amp * math.sin(2 * math.pi * freq * t + phase)
+    return fn
+
 def piecewise_lin(fs, ts):
     #fs and ts are both lists. first ramp will be from fs[0] to fs[1] in time ts[0] to ts[1], etc.
     # assume ts are sorted.
