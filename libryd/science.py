@@ -236,7 +236,7 @@ def piecewise_fn(fns, ts):
             else:
                 if t < ts[idx]:
                     # t is already  greater than ts[idx - 1]
-                    return vals[idx]
+                    return fns[idx](t - ts[idx - 1])
                 else:
                     idx = idx + 1
     return fn
