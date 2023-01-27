@@ -53,10 +53,10 @@ def measure_sigmaz(state):
 def measure_zz(state):
     res = []
     real_res = []
-    for i in range(config.L - 1):
+    for i in range(config.L):
         entry = []
         real_entry = []
-        for j in range(i, config.L - 1):
+        for j in range(i, config.L):
             op = sigmaz(i) * sigmaz(j)
             val = state.dot(op * state)
             entry.append(val)
