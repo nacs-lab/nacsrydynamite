@@ -1,5 +1,6 @@
 from dynamite.operators import sigmax, sigmay, sigmaz, zero, identity
 from dynamite import config
+from scipy import interpolate
 import math
 
 def n_op(i):
@@ -47,6 +48,21 @@ def measure_sigmaz(state):
         val = state.dot(sigmaz(i) * state)
         res.append(val)
         real_res.append(val.real)
+    return res, real_res
+
+def measure_zz(state):
+    res = []
+    real_res = []
+    for i in range(config.L - 1):
+        entry = []
+        real_entry = []
+        for j in range(i, config.L - 1):
+            op = sigmaz(i) * sigmaz(j)
+            val = state.dot(op * state)
+            entry.append(val)
+            real_entry.append(val.real)
+        res.append(entry)
+        real_res.append(real_entry)
     return res, real_res
 
 def measure_n_op(state):
@@ -180,6 +196,12 @@ def sine(amp, freq, phase):
     @vectorize
     def fn(t):
         return amp * math.sin(2 * math.pi * freq * t + phase)
+    return fn
+
+def interpolate_fn(ts, vals):
+    tck = interpolate.splrep(ts, vals)
+    def fn(t):
+        return interpolate.splev(t, tck)
     return fn
 
 def piecewise_lin(fs, ts):
