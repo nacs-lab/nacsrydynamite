@@ -74,6 +74,21 @@ def measure_n_op(state):
         real_res.append(val.real)
     return res, real_res
 
+def measure_nn_op(state):
+    res = []
+    real_res = []
+    for i in range(config.L):
+        entry = []
+        real_entry = []
+        for j in range(i, config.L):
+            op = n_op(i) * n_op(j)
+            val = state.dot(op * state)
+            entry.append(val)
+            real_entry.append(val.real)
+        res.append(entry)
+        real_res.append(real_entry)
+    return res, real_res
+
 def measure_sigma_field_open(state):
     res = []
     real_res = []
